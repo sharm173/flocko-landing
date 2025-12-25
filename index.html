@@ -200,34 +200,27 @@
             class="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-10 max-w-2xl w-full border border-gray-100 mx-4 sm:mx-0">
             <div class="flex items-center justify-between mb-4 sm:mb-6">
               <div class="flex items-center space-x-2 sm:space-x-3">
-                <div class="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse">
-                </div><span class="text-xs sm:text-sm font-medium text-gray-700">Live
-                  Demo</span>
-              </div><button id="voice-demo-btn"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center transition shadow-lg flex-shrink-0"><i
-                  class="fa-solid fa-microphone text-xl sm:text-2xl"></i></button>
+                <div id="status-indicator" class="w-2 h-2 sm:w-3 sm:h-3 bg-gray-400 rounded-full"></div>
+                <span id="status-text" class="text-xs sm:text-sm font-medium text-gray-700">Ready</span>
+              </div>
+              <button id="voice-demo-btn"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center transition shadow-lg flex-shrink-0">
+                <i class="fa-solid fa-microphone text-xl sm:text-2xl"></i>
+              </button>
             </div>
             <div id="demo-waveform"
-              class="h-16 sm:h-20 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl flex items-center justify-center space-x-1 px-2 sm:px-4">
-              <div id="i6hxx"
-                class="w-1 bg-indigo-400 rounded-full h-8 animate-pulse"></div>
-              <div id="iyw2h"
-                class="w-1 bg-indigo-400 rounded-full h-12 animate-pulse"></div>
-              <div id="i8zb7"
-                class="w-1 bg-indigo-400 rounded-full h-6 animate-pulse"></div>
-              <div id="iv5rr"
-                class="w-1 bg-indigo-400 rounded-full h-16 animate-pulse"></div>
-              <div id="il3qk"
-                class="w-1 bg-indigo-400 rounded-full h-10 animate-pulse"></div>
-              <div id="igjxq"
-                class="w-1 bg-indigo-400 rounded-full h-14 animate-pulse"></div>
-              <div id="ihzjs"
-                class="w-1 bg-indigo-400 rounded-full h-8 animate-pulse"></div>
-              <div id="isc2h"
-                class="w-1 bg-indigo-400 rounded-full h-12 animate-pulse"></div>
+              class="h-16 sm:h-20 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl flex items-center justify-center space-x-1 px-4">
+              <div id="wave-1" class="w-1 bg-indigo-400 rounded-full h-8"></div>
+              <div id="wave-2" class="w-1 bg-indigo-400 rounded-full h-12"></div>
+              <div id="wave-3" class="w-1 bg-indigo-400 rounded-full h-6"></div>
+              <div id="wave-4" class="w-1 bg-indigo-400 rounded-full h-16"></div>
+              <div id="wave-5" class="w-1 bg-indigo-400 rounded-full h-10"></div>
+              <div id="wave-6" class="w-1 bg-indigo-400 rounded-full h-14"></div>
+              <div id="wave-7" class="w-1 bg-indigo-400 rounded-full h-8"></div>
+              <div id="wave-8" class="w-1 bg-indigo-400 rounded-full h-12"></div>
             </div>
-            <p class="text-gray-500 text-xs sm:text-sm mt-3 sm:mt-4 text-center">Click the
-              microphone to try our voice agent</p>
+            <p class="text-gray-500 text-xs sm:text-sm mt-3 sm:mt-4 text-center">Click the microphone to start a conversation with our voice AI agent</p>
+            <audio id="audio-player" style="display: none;"></audio>
           </div>
           <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 px-4 sm:px-0"><a href="https://calendly.com/tushar-flocko/" target="_blank" rel="noopener noreferrer"
               class="w-full sm:w-auto bg-indigo-600 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-xl hover:bg-indigo-700 transition text-base sm:text-lg font-medium shadow-lg shadow-indigo-200 text-center">
@@ -498,35 +491,362 @@
     <script>
       document.addEventListener('DOMContentLoaded', function()
       {
+        // ElevenLabs Agent Configuration
+        const ELEVENLABS_CONFIG = {
+          agentId: 'agent_6601k9hvrsa5ft7sndw1hdb5a0f0',
+          apiKey: 'sk_afac18da491353ddf15d0bafe3de40585bae36de21e7c7a1',
+          wsUrl: 'wss://api.elevenlabs.io/v1/convai/conversation'
+        };
+
+        // Custom Widget Elements
         const voiceBtn = document.getElementById('voice-demo-btn');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
         const demoWaveform = document.getElementById('demo-waveform');
-        let isListening = false;
+        const audioPlayer = document.getElementById('audio-player');
+        const waveformBars = ['wave-1', 'wave-2', 'wave-3', 'wave-4', 'wave-5', 'wave-6', 'wave-7', 'wave-8'];
 
-        voiceBtn.addEventListener('click', function()
-        {
-          isListening = !isListening;
+        let isRecording = false;
+        let websocket = null;
+        let audioContext = null;
+        let analyser = null;
+        let animationFrameId = null;
+        let conversationId = null;
+        let audioFormat = null;
+        let audioStream = null;
+        let audioQueue = [];
+        let isPlayingAudio = false;
 
-          if (isListening)
-          {
-            voiceBtn.innerHTML =
-              '<i class="fa-solid fa-stop text-2xl"></i>';
-            voiceBtn.classList.add('bg-red-500', 'hover:bg-red-600');
-            voiceBtn.classList.remove('bg-indigo-600',
-              'hover:bg-indigo-700');
-            demoWaveform.classList.add('border-2', 'border-indigo-400');
+        // Convert PCM to WAV for playback
+        function pcmToWav(pcmData, sampleRate, channels, bitsPerSample) {
+          const length = pcmData.length;
+          const buffer = new ArrayBuffer(44 + length);
+          const view = new DataView(buffer);
+          
+          const writeString = (offset, string) => {
+            for (let i = 0; i < string.length; i++) {
+              view.setUint8(offset + i, string.charCodeAt(i));
+            }
+          };
+          
+          writeString(0, 'RIFF');
+          view.setUint32(4, 36 + length, true);
+          writeString(8, 'WAVE');
+          writeString(12, 'fmt ');
+          view.setUint32(16, 16, true);
+          view.setUint16(20, 1, true);
+          view.setUint16(22, channels, true);
+          view.setUint32(24, sampleRate, true);
+          view.setUint32(28, sampleRate * channels * bitsPerSample / 8, true);
+          view.setUint16(32, channels * bitsPerSample / 8, true);
+          view.setUint16(34, bitsPerSample, true);
+          writeString(36, 'data');
+          view.setUint32(40, length, true);
+          
+          const pcmView = new Uint8Array(buffer, 44);
+          pcmView.set(pcmData);
+          
+          return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        // Convert Float32Array to PCM16
+        function floatTo16BitPCM(float32Array) {
+          const buffer = new ArrayBuffer(float32Array.length * 2);
+          const view = new DataView(buffer);
+          let offset = 0;
+          for (let i = 0; i < float32Array.length; i++, offset += 2) {
+            const s = Math.max(-1, Math.min(1, float32Array[i]));
+            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
           }
-          else
-          {
-            voiceBtn.innerHTML =
-              '<i class="fa-solid fa-microphone text-2xl"></i>';
-            voiceBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
-            voiceBtn.classList.add('bg-indigo-600',
-              'hover:bg-indigo-700');
-            demoWaveform.classList.remove('border-2',
-              'border-indigo-400');
-          }
-        });
+          return new Uint8Array(buffer);
+        }
 
+        function initAudioContext() {
+          if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+          }
+        }
+
+        function animateWaveform() {
+          if (!isRecording || !analyser) {
+            waveformBars.forEach(id => {
+              const bar = document.getElementById(id);
+              if (bar) bar.style.height = '8px';
+            });
+            return;
+          }
+
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(dataArray);
+
+          waveformBars.forEach((id, index) => {
+            const bar = document.getElementById(id);
+            if (bar) {
+              const value = dataArray[index * 2] || 0;
+              const height = Math.max(8, (value / 255) * 60);
+              bar.style.height = height + 'px';
+            }
+          });
+
+          animationFrameId = requestAnimationFrame(animateWaveform);
+        }
+
+        function updateStatus(status, color) {
+          statusText.textContent = status;
+          statusIndicator.className = `w-2 h-2 sm:w-3 sm:h-3 ${color} rounded-full`;
+          if (color === 'bg-green-500') {
+            statusIndicator.classList.add('animate-pulse');
+          } else {
+            statusIndicator.classList.remove('animate-pulse');
+          }
+        }
+
+        function playAudioQueue() {
+          if (isPlayingAudio || audioQueue.length === 0) return;
+
+          isPlayingAudio = true;
+          const pcmData = audioQueue.shift();
+          
+          try {
+            const audioBlob = pcmToWav(pcmData, 16000, 1, 16);
+            const audioUrl = URL.createObjectURL(audioBlob);
+            
+            if (audioPlayer.src && audioPlayer.src.startsWith('blob:')) {
+              URL.revokeObjectURL(audioPlayer.src);
+            }
+            
+            audioPlayer.src = audioUrl;
+            
+            audioPlayer.onended = () => {
+              URL.revokeObjectURL(audioUrl);
+              isPlayingAudio = false;
+              if (audioQueue.length > 0) playAudioQueue();
+            };
+            
+            audioPlayer.onerror = () => {
+              URL.revokeObjectURL(audioUrl);
+              isPlayingAudio = false;
+              if (audioQueue.length > 0) playAudioQueue();
+            };
+            
+            audioPlayer.play().catch(() => {
+              URL.revokeObjectURL(audioUrl);
+              isPlayingAudio = false;
+              if (audioQueue.length > 0) playAudioQueue();
+            });
+          } catch (err) {
+            console.error('Error playing audio:', err);
+            isPlayingAudio = false;
+            if (audioQueue.length > 0) playAudioQueue();
+          }
+        }
+
+        async function connectToAgent() {
+          try {
+            if (websocket) websocket.close();
+
+            const wsUrl = `${ELEVENLABS_CONFIG.wsUrl}?agent_id=${ELEVENLABS_CONFIG.agentId}&xi-api-key=${ELEVENLABS_CONFIG.apiKey}`;
+            console.log('Connecting to ElevenLabs WebSocket...');
+            
+            websocket = new WebSocket(wsUrl);
+            
+            websocket.onopen = () => {
+              console.log('WebSocket connected');
+              updateStatus('Connected', 'bg-green-500');
+            };
+
+            websocket.onmessage = (event) => {
+              try {
+                const data = JSON.parse(event.data);
+                
+                // #region debugLog
+                fetch('http://127.0.0.1:7242/ingest/bf1bd194-5a70-417c-8841-93a22966a618',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:onmessage',message:'received',data:{type:data.type,keys:Object.keys(data)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'H6'})}).catch(()=>{});
+                // #endregion
+                
+                if (data.type === 'conversation_initiation_metadata') {
+                  conversationId = data.conversation_initiation_metadata_event?.conversation_id;
+                  audioFormat = data.conversation_initiation_metadata_event?.user_input_audio_format || 'pcm_16000';
+                  console.log('Conversation initialized:', conversationId);
+                  updateStatus('Ready to Listen', 'bg-green-500');
+                }
+                else if (data.type === 'audio' || data.audio_event) {
+                  const base64Audio = data.audio_event?.audio_base_64;
+                  if (base64Audio) {
+                    const binaryString = atob(base64Audio);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                      bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    audioQueue.push(bytes);
+                    playAudioQueue();
+                  }
+                }
+                else if (data.type === 'user_transcript') {
+                  const transcript = data.user_transcription_event?.user_transcript;
+                  if (transcript) {
+                    console.log('✅ User transcript:', transcript);
+                    // #region transcriptLog
+                    fetch('http://127.0.0.1:7242/ingest/bf1bd194-5a70-417c-8841-93a22966a618',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:transcript',message:'user_transcript received',data:{transcript},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'H6'})}).catch(()=>{});
+                    // #endregion
+                  }
+                }
+                else if (data.type === 'agent_response') {
+                  const response = data.agent_response_event?.agent_response;
+                  if (response) console.log('✅ Agent response:', response);
+                }
+                else if (data.type === 'ping') {
+                  // Respond to ping per API spec
+                  websocket.send(JSON.stringify({
+                    type: 'pong',
+                    event_id: data.ping_event?.event_id
+                  }));
+                }
+              } catch (e) {
+                console.log('Message parse error:', e);
+              }
+            };
+
+            websocket.onerror = (error) => {
+              console.error('WebSocket error:', error);
+              updateStatus('Connection Error', 'bg-red-500');
+            };
+
+            websocket.onclose = (event) => {
+              console.log('WebSocket closed:', event.code, event.reason);
+              updateStatus('Disconnected', 'bg-gray-400');
+              // #region closeLog
+              fetch('http://127.0.0.1:7242/ingest/bf1bd194-5a70-417c-8841-93a22966a618',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:onclose',message:'websocket closed',data:{code:event.code,reason:event.reason,wasClean:event.wasClean},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'H7'})}).catch(()=>{});
+              // #endregion
+            };
+
+          } catch (error) {
+            console.error('Connection error:', error);
+            updateStatus('Connection Failed', 'bg-red-500');
+          }
+        }
+
+        async function startRecording() {
+          try {
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+              updateStatus('Connecting...', 'bg-yellow-500');
+              await connectToAgent();
+              
+              let waitCount = 0;
+              while (!conversationId && waitCount < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                waitCount++;
+              }
+              
+              if (!conversationId) {
+                updateStatus('Connection Timeout', 'bg-red-500');
+                return;
+              }
+            }
+
+            audioStream = await navigator.mediaDevices.getUserMedia({ 
+              audio: { sampleRate: 16000, channelCount: 1, echoCancellation: true, noiseSuppression: true }
+            });
+            
+            initAudioContext();
+            const source = audioContext.createMediaStreamSource(audioStream);
+            source.connect(analyser);
+
+            const processor = audioContext.createScriptProcessor(4096, 1, 1);
+            let chunkCount = 0;
+            
+            processor.onaudioprocess = (e) => {
+              if (!isRecording || !websocket || websocket.readyState !== WebSocket.OPEN || !conversationId) return;
+              if (isPlayingAudio) return; // Don't send while agent is speaking
+
+              const inputData = e.inputBuffer.getChannelData(0);
+              
+              // Resample to 16kHz if needed
+              let audioData = inputData;
+              if (audioContext.sampleRate !== 16000) {
+                const ratio = audioContext.sampleRate / 16000;
+                const newLength = Math.floor(inputData.length / ratio);
+                audioData = new Float32Array(newLength);
+                for (let i = 0; i < newLength; i++) {
+                  audioData[i] = inputData[Math.floor(i * ratio)];
+                }
+              }
+              
+              try {
+                const pcmData = floatTo16BitPCM(audioData);
+                const base64Audio = btoa(String.fromCharCode(...pcmData));
+                
+                // CORRECT FORMAT per API docs: { user_audio_chunk: "base64..." }
+                const message = { user_audio_chunk: base64Audio };
+                websocket.send(JSON.stringify(message));
+                
+                chunkCount++;
+                if (chunkCount % 20 === 0) {
+                  console.log('Sent audio chunk:', chunkCount);
+                  // #region audioLog
+                  fetch('http://127.0.0.1:7242/ingest/bf1bd194-5a70-417c-8841-93a22966a618',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:audio',message:'sent user_audio_chunk',data:{chunkCount,base64Length:base64Audio.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'H6'})}).catch(()=>{});
+                  // #endregion
+                }
+              } catch (err) {
+                console.error('Error processing audio:', err);
+              }
+            };
+
+            source.connect(processor);
+            processor.connect(audioContext.destination);
+
+            isRecording = true;
+            updateStatus('Listening', 'bg-green-500');
+            animateWaveform();
+
+          } catch (error) {
+            console.error('Error starting recording:', error);
+            updateStatus('Microphone Error', 'bg-red-500');
+          }
+        }
+
+        function stopRecording() {
+          if (isRecording) {
+            isRecording = false;
+            updateStatus('Processing', 'bg-yellow-500');
+            
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            
+            if (audioStream) {
+              audioStream.getTracks().forEach(track => track.stop());
+              audioStream = null;
+            }
+            
+            waveformBars.forEach(id => {
+              const bar = document.getElementById(id);
+              if (bar) bar.style.height = '8px';
+            });
+          }
+        }
+
+        if (voiceBtn) {
+          voiceBtn.addEventListener('click', async function() {
+            if (!isRecording) {
+              voiceBtn.innerHTML = '<i class="fa-solid fa-stop text-xl sm:text-2xl"></i>';
+              voiceBtn.classList.add('bg-red-500', 'hover:bg-red-600');
+              voiceBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+              demoWaveform.classList.add('border-2', 'border-indigo-400');
+              await startRecording();
+            } else {
+              voiceBtn.innerHTML = '<i class="fa-solid fa-microphone text-xl sm:text-2xl"></i>';
+              voiceBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+              voiceBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+              demoWaveform.classList.remove('border-2', 'border-indigo-400');
+              stopRecording();
+              updateStatus('Ready', 'bg-gray-400');
+            }
+          });
+        }
+
+        updateStatus('Ready', 'bg-gray-400');
+
+        // Section scroll animations
         const sections = document.querySelectorAll('section');
 
         const observerOptions = {
@@ -594,11 +914,6 @@
         });
 
         // Handle form submission - using mailto (works immediately without backend)
-        // This opens the user's email client with a pre-filled email
-        // For production, consider upgrading to:
-        // - EmailJS (https://www.emailjs.com/) - Free, supports CORS
-        // - Formspree (https://formspree.io/) - Free tier available
-        // - Web3Forms (https://web3forms.com/) - Free, no signup required
         const contactForm = document.getElementById('contact-form');
         
         if (contactForm) {

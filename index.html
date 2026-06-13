@@ -1,35 +1,36 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flocko - Voice AI Agents</title>
+    <title>Flocko — Domain-trained Voice AI for Banks</title>
+    <meta name="description"
+      content="Flocko builds voice AI agents post-trained on your bank's SOPs, policies, and real calls — resolving customer requests end-to-end with 90–95% task completion and sub-700 ms responses.">
+    <meta name="theme-color" content="#0A0A12">
+    <link rel="canonical" href="https://flocko.live/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://flocko.live/">
+    <meta property="og:title" content="Flocko — Domain-trained Voice AI for Banks">
+    <meta property="og:description"
+      content="Voice AI agents post-trained on your SOPs, policies, and real calls. Natural voice, real-time, enterprise-reliable.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      window.FontAwesomeConfig = {
-        autoReplaceSvg: 'nest'
-      };
-    </script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet">
-    <style>
-      ::-webkit-scrollbar
-      {
-        display: none;
-      }
-
-      body
-      {
-        font-family: 'Inter', sans-serif;
-      }
-    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Flocko",
+      "url": "https://flocko.live/",
+      "email": "tushar@flocko.live",
+      "description": "Domain-trained voice AI agents for banks."
+    }
+    </script>
     <script>
       tailwind.config = {
         theme:
@@ -39,38 +40,33 @@
             fontFamily:
             {
               sans: ['Inter', 'sans-serif'],
+              display: ['Inter', 'sans-serif'],
             },
             colors:
             {
-              primary: '#4F46E5',
+              ink: '#0A0A12',
+              primary: '#6366F1',
             }
           }
         }
       }
     </script>
-    <style data-grapesjs-styles="true">
-      *
-      {
-        box-sizing: border-box;
-      }
-
-      body
-      {
-        margin: 0;
-      }
-
+    <style>
       ::-webkit-scrollbar
       {
         display: none;
       }
 
+      html
+      {
+        scroll-behavior: smooth;
+      }
+
       body
       {
-        font-family: Inter, sans-serif;
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        background: #0A0A12;
       }
 
       *
@@ -78,408 +74,1117 @@
         box-sizing: border-box;
       }
 
-      #i6hxx
+      ::selection
       {
-        animation-delay: 0s;
+        background: #6366F1;
+        color: #fff;
       }
 
-      #iyw2h
+      /* Film grain over everything */
+      .grain
       {
-        animation-delay: 0.1s;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       }
 
-      #i8zb7
+      /* Aurora blobs */
+      .blob
       {
-        animation-delay: 0.2s;
+        animation: drift 18s ease-in-out infinite;
       }
 
-      #iv5rr
+      .blob-2
       {
-        animation-delay: 0.3s;
+        animation-duration: 26s;
+        animation-delay: -9s;
       }
 
-      #il3qk
+      @keyframes drift
       {
-        animation-delay: 0.4s;
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(50px, -40px) scale(1.1); }
       }
 
-      #igjxq
+      /* Scroll reveals */
+      [data-reveal]
       {
-        animation-delay: 0.5s;
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: var(--d, 0ms);
       }
 
-      #ihzjs
+      .is-revealed
       {
-        animation-delay: 0.6s;
+        opacity: 1 !important;
+        transform: none !important;
       }
 
-      #isc2h
+      /* Marquee ticker */
+      .marquee-track
       {
-        animation-delay: 0.7s;
+        display: flex;
+        width: max-content;
+        animation: marquee 32s linear infinite;
       }
 
-      #hero-section
+      @keyframes marquee
       {
-        min-height: 600px;
+        to { transform: translateX(-50%); }
       }
 
-      @media (min-width: 640px) {
-        #hero-section {
-          min-height: 800px;
+      /* Pointer-follow glow on cards */
+      .glow-card
+      {
+        position: relative;
+      }
+
+      .glow-card::before
+      {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background:
+          radial-gradient(480px circle at var(--mx, 50%) var(--my, 50%),
+            rgba(99, 102, 241, 0.13), transparent 45%);
+        opacity: 0;
+        transition: opacity 0.35s;
+        pointer-events: none;
+      }
+
+      .glow-card:hover::before
+      {
+        opacity: 1;
+      }
+
+      @media (prefers-reduced-motion: reduce)
+      {
+        html { scroll-behavior: auto; }
+        .blob, .blob-2 { animation: none; }
+        .marquee-track { animation: none; }
+        [data-reveal]
+        {
+          opacity: 1;
+          transform: none;
+          transition: none;
         }
-      }
-
-      #iil5j
-      {
-        height: 100%;
-      }
-
-      #irvol
-      {
-        min-height: auto;
-      }
-
-      #iazxf
-      {
-        min-height: auto;
       }
     </style>
   </head>
 
-  <body class="bg-white">
-    <header id="header" class="bg-white border-b border-gray-100">
+  <body class="bg-ink text-white antialiased overflow-x-hidden">
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header id="header"
+      class="sticky top-0 z-40 bg-ink/70 backdrop-blur-xl border-b border-white/5">
       <div
-        class="container mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
-        <div class="flex items-center">
-          <div class="flex items-center space-x-2"><svg fill="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600">
-              <path
-                d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z">
-              </path>
-              <path
-                d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z">
-              </path>
-            </svg><span
-              class="text-xl sm:text-2xl font-semibold text-indigo-600">Flocko</span></div>
-        </div>
-        <div class="flex items-center"><a
-            href="https://calendly.com/tushar-flocko/" target="_blank" rel="noopener noreferrer"
-            class="bg-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg hover:bg-indigo-700 transition text-xs sm:text-sm font-medium">Book
-            a Demo</a></div>
+        class="container mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+        <a href="#" class="flex items-center space-x-2.5" aria-label="Flocko home">
+          <svg fill="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 sm:w-7 sm:h-7 text-indigo-400" aria-hidden="true">
+            <path
+              d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
+            <path
+              d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
+          </svg>
+          <span
+            class="text-xl sm:text-2xl font-semibold tracking-tight">Flocko</span>
+        </a>
+        <nav class="hidden md:flex items-center space-x-9" aria-label="Main">
+          <a href="#use-cases"
+            class="text-sm text-white/60 hover:text-white transition">Use cases</a>
+          <a href="#how-it-works"
+            class="text-sm text-white/60 hover:text-white transition">How it
+            works</a>
+          <a href="#why-flocko"
+            class="text-sm text-white/60 hover:text-white transition">Why
+            Flocko</a>
+          <a href="#team"
+            class="text-sm text-white/60 hover:text-white transition">Team</a>
+        </nav>
+        <a href="https://calendly.com/tushar-flocko/" target="_blank"
+          rel="noopener noreferrer"
+          class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full transition text-xs sm:text-sm font-medium shadow-[0_0_32px_-8px_rgba(99,102,241,0.8)]">Book
+          a Demo</a>
       </div>
     </header>
-    <section id="hero-section"
-      class="bg-gradient-to-br from-gray-50 to-white relative overflow-hidden min-h-[600px] sm:min-h-[800px] py-12 sm:py-16">
-      <div class="absolute inset-0 opacity-5"><svg
-          xmlns="http://www.w3.org/2000/svg" id="iil5j" class="w-full h-full">
+
+    <!-- Hero -->
+    <section id="hero" class="relative overflow-hidden">
+      <div
+        class="blob absolute -top-40 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] bg-indigo-600/25 rounded-full blur-[140px]"
+        aria-hidden="true"></div>
+      <div
+        class="blob blob-2 absolute top-40 -right-56 w-[36rem] h-[36rem] bg-violet-600/15 rounded-full blur-[120px]"
+        aria-hidden="true"></div>
+      <div class="absolute inset-0 opacity-[0.05]" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
           <defs>
-            <pattern id="grid" width="40" height="40"
-              patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor"
+            <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="white"
                 stroke-width="1"></path>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid)"
-            class="text-indigo-600"></rect>
-        </svg></div>
-      <div id="iazxf" class="container mx-auto px-4 sm:px-6 relative z-10">
-        <div id="irvol"
-          class="flex flex-col items-center justify-center text-center pt-12 sm:pt-16 md:pt-24 pb-8 sm:pb-12">
-          <h1
-            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight max-w-5xl px-4">
-            Domain-trained Voice AI<br class="hidden sm:block"> for Banks
-          </h1>
-          <p
-            class="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-4xl leading-relaxed font-light px-4">
-            Post-trained on your workflows, your policies, and your customer
-            interactions.<br class="hidden sm:block">
-            Natural voice. Real-time. Enterprise-reliable.
-          </p>
-          <div
-            class="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-10 max-w-2xl w-full border border-gray-100 mx-4 sm:mx-0">
-            <div class="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
-              <div class="bg-indigo-50 p-2.5 sm:p-3 rounded-xl flex-shrink-0">
-                <i class="fa-solid fa-phone-volume text-indigo-600 text-lg sm:text-xl"></i>
+          <rect width="100%" height="100%" fill="url(#grid)"></rect>
+        </svg>
+      </div>
+
+      <div
+        class="container mx-auto px-5 sm:px-8 relative z-10 pt-20 sm:pt-28 lg:pt-32 pb-16 sm:pb-24 text-center">
+        <h1 data-reveal
+          class="font-display font-semibold text-[clamp(2.75rem,5.5vw,4.75rem)] leading-[1.08] tracking-tight mb-7 sm:mb-9">
+          Domain-trained Voice AI<br>
+          <span class="text-white/60 font-normal">for</span>
+          <em
+            class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">Banks.</em>
+        </h1>
+
+        <p data-reveal style="--d:90ms"
+          class="text-base sm:text-lg lg:text-xl text-white/55 font-light leading-relaxed max-w-2xl mx-auto mb-10 sm:mb-12">
+          Post-trained on your SOPs, policies, and real customer calls — so it
+          resolves requests end-to-end with the accuracy banking demands.
+          Natural voice. Real-time. Enterprise-reliable.
+        </p>
+
+        <div data-reveal style="--d:180ms"
+          class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-16 sm:mb-20">
+          <a href="https://calendly.com/tushar-flocko/" target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white px-9 py-4 rounded-full transition text-base font-medium shadow-[0_0_48px_-8px_rgba(99,102,241,0.9)] hover:-translate-y-0.5 duration-200">
+            Book a Demo
+          </a>
+          <button id="talk-to-us-btn"
+            class="w-full sm:w-auto border border-white/10 hover:border-white/25 bg-transparent text-white/70 hover:text-white px-9 py-4 rounded-full transition text-base font-medium cursor-pointer hover:-translate-y-0.5 duration-200">
+            Talk to Us
+          </button>
+        </div>
+
+        <!-- Audio console -->
+        <div data-reveal style="--d:270ms"
+          class="max-w-3xl mx-auto rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 sm:p-8 text-left shadow-2xl shadow-indigo-950/40">
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center space-x-3">
+              <span class="relative flex w-2.5 h-2.5" aria-hidden="true">
+                <span id="rec-ping"
+                  class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-50 hidden"></span>
+                <span id="rec-dot"
+                  class="relative inline-flex rounded-full w-2.5 h-2.5 bg-white/25"></span>
+              </span>
+              <p class="text-sm sm:text-base font-medium text-white/90">
+                Sample agent call
+                <span class="text-white/40 font-light">· Banking · English</span>
+              </p>
+            </div>
+            <svg fill="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 text-indigo-400/70" aria-hidden="true">
+              <path
+                d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
+              <path
+                d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
+            </svg>
+          </div>
+
+          <canvas id="wave-canvas" class="w-full h-20 sm:h-24 block"
+            aria-hidden="true"></canvas>
+
+          <div class="flex items-center space-x-4 sm:space-x-5 mt-5">
+            <button id="play-btn"
+              class="bg-indigo-500 hover:bg-indigo-400 text-white rounded-full w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center transition shadow-[0_0_36px_-6px_rgba(99,102,241,0.9)] flex-shrink-0"
+              aria-label="Play sample call">
+              <svg id="play-icon" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" fill="currentColor"
+                class="w-5 h-5 sm:w-6 sm:h-6 ml-0.5" aria-hidden="true">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" fill="currentColor"
+                class="w-5 h-5 sm:w-6 sm:h-6 hidden" aria-hidden="true">
+                <path d="M6 5h4v14H6zM14 5h4v14h-4z"></path>
+              </svg>
+            </button>
+            <div class="flex-1">
+              <div id="progress-track"
+                class="h-1.5 bg-white/10 rounded-full cursor-pointer group"
+                role="slider" aria-label="Seek" aria-valuemin="0"
+                aria-valuemax="100" aria-valuenow="0">
+                <div id="progress-fill"
+                  class="h-1.5 bg-indigo-400 rounded-full relative"
+                  style="width: 0%">
+                  <span
+                    class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition shadow"></span>
+                </div>
               </div>
-              <span class="text-sm sm:text-base font-semibold text-gray-900">Sample agent call</span>
+              <div
+                class="flex justify-between mt-2 text-xs text-white/40 tabular-nums">
+                <span id="time-current">0:00</span>
+                <span id="time-duration">–:––</span>
+              </div>
             </div>
-            <audio id="demo-audio" controls preload="metadata"
-              class="w-full" src="bank-english.mp3">
-              Your browser does not support the audio element.
-            </audio>
-            <p class="text-gray-500 text-xs sm:text-sm mt-3 sm:mt-4 text-center">Listen to a sample recording of our voice AI agent handling a call</p>
           </div>
-          <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 px-4 sm:px-0"><a href="https://calendly.com/tushar-flocko/" target="_blank" rel="noopener noreferrer"
-              class="w-full sm:w-auto bg-indigo-600 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-xl hover:bg-indigo-700 transition text-base sm:text-lg font-medium shadow-lg shadow-indigo-200 text-center">
-              Book a Demo
-            </a><button id="talk-to-us-btn"
-              class="w-full sm:w-auto text-indigo-600 hover:text-indigo-700 text-base sm:text-lg font-medium flex items-center justify-center cursor-pointer bg-transparent border-none">
-              Talk to Us
-              <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></button></div>
+          <audio id="demo-audio" preload="metadata" src="bank-english.mp3"></audio>
+        </div>
+        <p data-reveal style="--d:330ms" class="text-white/35 text-xs sm:text-sm mt-5">
+          A sample recording of our voice AI agent handling a call
+        </p>
+      </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="border-y border-white/5 py-4 overflow-hidden" aria-hidden="true">
+      <div class="marquee-track">
+        <div
+          class="flex items-center space-x-8 text-xs uppercase tracking-[0.22em] text-white/35 whitespace-nowrap pr-8">
+          <span>All major Indian languages</span><span class="text-indigo-400/60">✦</span>
+          <span>&lt;700 ms responses</span><span class="text-indigo-400/60">✦</span>
+          <span>Trained on your workflows</span><span class="text-indigo-400/60">✦</span>
+          <span>Runs in your VPC</span><span class="text-indigo-400/60">✦</span>
+          <span>End-to-end resolution</span><span class="text-indigo-400/60">✦</span>
+          <span>Millions of calls</span><span class="text-indigo-400/60">✦</span>
+        </div>
+        <div
+          class="flex items-center space-x-8 text-xs uppercase tracking-[0.22em] text-white/35 whitespace-nowrap pr-8">
+          <span>All major Indian languages</span><span class="text-indigo-400/60">✦</span>
+          <span>&lt;700 ms responses</span><span class="text-indigo-400/60">✦</span>
+          <span>Trained on your workflows</span><span class="text-indigo-400/60">✦</span>
+          <span>Runs in your VPC</span><span class="text-indigo-400/60">✦</span>
+          <span>End-to-end resolution</span><span class="text-indigo-400/60">✦</span>
+          <span>Millions of calls</span><span class="text-indigo-400/60">✦</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <section id="stats" class="py-16 sm:py-20">
+      <div class="container mx-auto px-5 sm:px-8">
+        <dl
+          class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 max-w-5xl mx-auto text-center">
+          <div data-reveal>
+            <dd
+              class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 tabular-nums">
+              &lt;<span data-count="700">700</span><span
+                class="text-indigo-400">ms</span></dd>
+            <dt class="text-xs uppercase tracking-[0.18em] text-white/40">
+              response latency</dt>
+          </div>
+          <div data-reveal style="--d:90ms">
+            <dd
+              class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 tabular-nums">
+              <span data-count="90">90</span>–95<span
+                class="text-indigo-400">%</span></dd>
+            <dt class="text-xs uppercase tracking-[0.18em] text-white/40">
+              task completion</dt>
+          </div>
+          <div data-reveal style="--d:180ms">
+            <dd class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
+              <span class="text-indigo-400">≈</span>0</dd>
+            <dt class="text-xs uppercase tracking-[0.18em] text-white/40">
+              hallucinations</dt>
+          </div>
+          <div data-reveal style="--d:270ms">
+            <dd class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
+              Millions</dd>
+            <dt class="text-xs uppercase tracking-[0.18em] text-white/40">
+              calls at scale</dt>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Use cases (bento) -->
+    <section id="use-cases" class="py-16 sm:py-24 scroll-mt-24">
+      <div class="container mx-auto px-5 sm:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="mb-12 sm:mb-16 max-w-2xl" data-reveal>
+            <p
+              class="text-xs uppercase tracking-[0.22em] text-indigo-400 mb-4">
+              Use cases</p>
+            <h2
+              class="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08] mb-5">
+              Built for banking <em
+                class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">conversations.</em>
+            </h2>
+            <p class="text-white/50 font-light text-base sm:text-lg leading-relaxed">
+              One agent, trained on your workflows, across the calls your
+              contact center handles every day.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            <div data-reveal
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">Account servicing</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Balances, statements, transaction queries, and account updates
+                — answered instantly, around the clock.
+              </p>
+            </div>
+
+            <div data-reveal style="--d:90ms"
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">Card services</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Block lost cards, request reissues, manage limits — real
+                actions completed in your systems.
+              </p>
+            </div>
+
+            <div data-reveal
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">Collections &amp; reminders</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                EMI and payment reminders that stay compliant and capture
+                promises-to-pay at scale.
+              </p>
+            </div>
+
+            <div data-reveal style="--d:90ms"
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">KYC &amp; onboarding</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Follow up on pending documents and verifications, walking
+                customers through exactly what's needed.
+              </p>
+            </div>
+
+            <div data-reveal
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">Dispute &amp; request status</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Give customers live status on disputes, service requests, and
+                applications without hold queues.
+              </p>
+            </div>
+
+            <div data-reveal style="--d:90ms"
+              class="glow-card rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9 hover:border-indigo-400/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-7 h-7 text-indigo-400 mb-5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path>
+              </svg>
+              <h3 class="text-xl font-medium mb-2.5">Lead qualification</h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Qualify loan and product inquiries on the first call and route
+                hot leads to your bankers with full context.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-    <section id="value-proposition" class="bg-white py-16 sm:py-24 md:py-32">
-      <div class="container mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16 max-w-7xl mx-auto">
-          <div class="flex flex-col items-start">
-            <div class="bg-indigo-50 p-5 rounded-2xl mb-8"><i
-                class="fa-solid fa-bullseye text-indigo-600 text-3xl"></i></div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-4">
-              Enterprise Accuracy
-            </h3>
-            <p class="text-gray-600 text-lg leading-relaxed font-light">
-              Post-trained using GRPO + RULER on your SOPs and transcripts.
-              Delivers 90–95% task completion with near-zero hallucinations.
+
+    <!-- How it works -->
+    <section id="how-it-works" class="py-16 sm:py-24 scroll-mt-24">
+      <div class="container mx-auto px-5 sm:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="mb-12 sm:mb-16 max-w-2xl" data-reveal>
+            <p
+              class="text-xs uppercase tracking-[0.22em] text-indigo-400 mb-4">
+              How it works</p>
+            <h2
+              class="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08] mb-5">
+              From your documentation<br class="hidden sm:block"> to a
+              <em
+                class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">production
+                agent.</em>
+            </h2>
+          </div>
+
+          <ol class="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12">
+            <li data-reveal class="border-t border-white/10 pt-7">
+              <p
+                class="font-display text-5xl sm:text-6xl font-bold text-white/[0.09] mb-5"
+                aria-hidden="true">01</p>
+              <h3 class="text-lg sm:text-xl font-medium mb-3">
+                Share your SOPs &amp; calls
+              </h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                We ingest your policies, workflows, and historical call
+                transcripts — the ground truth for how your bank handles every
+                scenario.
+              </p>
+            </li>
+            <li data-reveal style="--d:120ms" class="border-t border-white/10 pt-7">
+              <p
+                class="font-display text-5xl sm:text-6xl font-bold text-white/[0.09] mb-5"
+                aria-hidden="true">02</p>
+              <h3 class="text-lg sm:text-xl font-medium mb-3">
+                We post-train your agent
+              </h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Reinforcement learning aligns the agent to your exact rules —
+                not a generic model with a prompt taped on.
+              </p>
+            </li>
+            <li data-reveal style="--d:240ms" class="border-t border-white/10 pt-7">
+              <p
+                class="font-display text-5xl sm:text-6xl font-bold text-white/[0.09] mb-5"
+                aria-hidden="true">03</p>
+              <h3 class="text-lg sm:text-xl font-medium mb-3">
+                Deploy &amp; integrate
+              </h3>
+              <p class="text-white/50 font-light leading-relaxed">
+                Goes live on your telephony, connected to your core systems.
+                Runs in your VPC or ours, and scales to millions of calls.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Flocko -->
+    <section id="why-flocko" class="py-16 sm:py-24 scroll-mt-24">
+      <div class="container mx-auto px-5 sm:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="mb-12 sm:mb-16 max-w-3xl" data-reveal>
+            <p
+              class="text-xs uppercase tracking-[0.22em] text-indigo-400 mb-4">
+              Why Flocko</p>
+            <h2
+              class="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08] mb-5">
+              Most voice bots wrap generic LLMs.
+              <em
+                class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">We
+                don't.</em>
+            </h2>
+            <p class="text-white/50 font-light text-base sm:text-lg leading-relaxed">
+              Flocko builds domain-specialized agents post-trained with RL to
+              follow your exact rules — accuracy that rivals frontier labs, at
+              lower cost.
             </p>
           </div>
-          <div class="flex flex-col items-start">
-            <div class="bg-indigo-50 p-5 rounded-2xl mb-8"><i
-                class="fa-solid fa-bolt text-indigo-600 text-3xl"></i></div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-4">
-              Natural, Low-Latency Voice
-            </h3>
-            <p class="text-gray-600 text-lg leading-relaxed font-light">
-              &lt;700 ms response time. Understands Hindi, English, and accents.
-              Handles interruptions, rapid speech, and complex queries.
-            </p>
-          </div>
-          <div class="flex flex-col items-start">
-            <div class="bg-indigo-50 p-5 rounded-2xl mb-8"><i
-                class="fa-solid fa-check-circle text-indigo-600 text-3xl"></i>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-stretch">
+            <div data-reveal
+              class="rounded-3xl border border-white/10 bg-white/[0.02] p-7 sm:p-9">
+              <h3 class="text-lg sm:text-xl font-medium text-white/45 mb-7">
+                Typical voice bots
+              </h3>
+              <ul class="space-y-5">
+                <li class="flex items-start space-x-3.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    class="w-5 h-5 text-white/25 mt-0.5 flex-shrink-0"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span class="text-white/45 font-light">Generic LLM wrapped
+                    with a prompt</span>
+                </li>
+                <li class="flex items-start space-x-3.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    class="w-5 h-5 text-white/25 mt-0.5 flex-shrink-0"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span class="text-white/45 font-light">Hallucinates on policy
+                    edge cases</span>
+                </li>
+                <li class="flex items-start space-x-3.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    class="w-5 h-5 text-white/25 mt-0.5 flex-shrink-0"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span class="text-white/45 font-light">Scripted flows that
+                    dead-end on real questions</span>
+                </li>
+                <li class="flex items-start space-x-3.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    class="w-5 h-5 text-white/25 mt-0.5 flex-shrink-0"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span class="text-white/45 font-light">Hands off to humans
+                    for any real action</span>
+                </li>
+                <li class="flex items-start space-x-3.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    class="w-5 h-5 text-white/25 mt-0.5 flex-shrink-0"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  <span class="text-white/45 font-light">Struggles with accents
+                    and code-switching</span>
+                </li>
+              </ul>
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-4">
-              End-to-End Resolution
-            </h3>
-            <p class="text-gray-600 text-lg leading-relaxed font-light">
-              Not just conversation. Integrates with your systems to complete
-              real actions: cancellations, refunds, rebookings, status updates,
-              baggage, and more.
-            </p>
+
+            <div data-reveal style="--d:120ms"
+              class="rounded-3xl p-[1px] bg-gradient-to-b from-indigo-400/50 via-indigo-500/15 to-violet-500/25">
+              <div
+                class="glow-card rounded-[calc(1.5rem-1px)] bg-[#10101D] p-7 sm:p-9 h-full">
+                <h3 class="text-lg sm:text-xl font-medium text-indigo-300 mb-7">
+                  Flocko
+                </h3>
+                <ul class="space-y-5">
+                  <li class="flex items-start space-x-3.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"
+                      aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                    <span class="text-white/85">Post-trained on your SOPs &amp;
+                      transcripts</span>
+                  </li>
+                  <li class="flex items-start space-x-3.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"
+                      aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                    <span class="text-white/85">90–95% task completion with
+                      near-zero hallucinations</span>
+                  </li>
+                  <li class="flex items-start space-x-3.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"
+                      aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                    <span class="text-white/85">Resolves requests end-to-end in
+                      your core systems</span>
+                  </li>
+                  <li class="flex items-start space-x-3.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"
+                      aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                    <span class="text-white/85">Natural in English and all
+                      major Indian languages — &lt;700 ms responses</span>
+                  </li>
+                  <li class="flex items-start space-x-3.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"
+                      aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                    <span class="text-white/85">Runs in your VPC or ours, fully
+                      customizable</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-    <section id="why-flocko" class="bg-gray-50 py-16 sm:py-24 md:py-32">
-      <div class="container mx-auto px-4 sm:px-6">
+
+    <!-- Team -->
+    <section id="team" class="py-16 sm:py-24 scroll-mt-24">
+      <div class="container mx-auto px-5 sm:px-8">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-8 sm:mb-12 px-4">
-            Why Flocko
+          <p data-reveal
+            class="text-xs uppercase tracking-[0.22em] text-indigo-400 mb-4">
+            Team</p>
+          <h2 data-reveal
+            class="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08] mb-12 sm:mb-16">
+            The <em
+              class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">person</em>
+            behind Flocko.
           </h2>
-          <p class="text-lg sm:text-xl md:text-2xl text-gray-700 mb-8 sm:mb-10 leading-relaxed font-light px-4">
-            Most voice bots wrap generic LLMs.<br class="hidden sm:block">
-            Flocko builds domain-specialized voice agents post-trained with RL
-            to follow your exact rules and workflows — delivering accuracy that
-            rivals frontier labs at lower cost.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div class="flex flex-col items-center">
-              <div class="text-indigo-600 mb-3"><i
-                  class="fa-solid fa-shield-halved text-4xl"></i></div>
-              <p class="text-gray-700 text-lg font-medium">
-                Runs in your VPC or ours
-              </p>
-            </div>
-            <div class="flex flex-col items-center">
-              <div class="text-indigo-600 mb-3"><i
-                  class="fa-solid fa-chart-line text-4xl"></i></div>
-              <p class="text-gray-700 text-lg font-medium">
-                Scales to millions of calls
-              </p>
-            </div>
-            <div class="flex flex-col items-center">
-              <div class="text-indigo-600 mb-3"><i
-                  class="fa-solid fa-sliders text-4xl"></i></div>
-              <p class="text-gray-700 text-lg font-medium">
-                Fully customizable
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="team" class="bg-white py-16 sm:py-24 md:py-32">
-      <div class="container mx-auto px-4 sm:px-6">
-        <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-12 sm:mb-16 px-4">
-            Team
-          </h2>
-          <div class="flex flex-wrap justify-center gap-8 sm:gap-12">
+          <div data-reveal style="--d:120ms"
+            class="flex flex-wrap justify-center gap-10">
             <div class="flex flex-col items-center max-w-xs">
-              <img src="dp.jpeg" alt="Tushar Sharma"
-                class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shadow-lg mb-5 border-4 border-gray-100">
-              <h3 class="text-xl sm:text-2xl font-semibold text-gray-900">
+              <div class="relative mb-6">
+                <div
+                  class="absolute inset-0 bg-indigo-500/40 rounded-full blur-2xl"
+                  aria-hidden="true"></div>
+                <img src="dp.jpeg" alt="Tushar Sharma" width="400" height="400"
+                  class="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover ring-1 ring-white/20">
+              </div>
+              <h3 class="text-xl sm:text-2xl font-medium">
                 Tushar Sharma
               </h3>
-              <p class="text-indigo-600 font-medium mb-3">
+              <p class="text-indigo-300 mb-4">
                 Founder &amp; CEO
               </p>
               <a href="https://www.linkedin.com/in/sharm173/" target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-400 hover:text-indigo-600 transition"
+                class="text-white/40 hover:text-indigo-300 transition"
                 aria-label="Tushar Sharma on LinkedIn">
-                <i class="fa-brands fa-linkedin text-2xl"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                  fill="currentColor" class="w-6 h-6" aria-hidden="true">
+                  <path
+                    d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 01107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 151.6z"></path>
+                </svg>
               </a>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section id="final-cta" class="bg-gray-50 py-16 sm:py-24 md:py-32">
-      <div class="container mx-auto px-4 sm:px-6">
+
+    <!-- Final CTA -->
+    <section id="final-cta" class="relative py-20 sm:py-32 overflow-hidden">
+      <div
+        class="blob absolute -bottom-48 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-indigo-600/20 rounded-full blur-[140px]"
+        aria-hidden="true"></div>
+      <div class="container mx-auto px-5 sm:px-8 relative z-10">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 sm:mb-12 leading-tight px-4">
-            Meet the next generation<br class="hidden sm:block">of customer service.
+          <h2 data-reveal
+            class="font-display font-semibold text-[clamp(2.25rem,4.5vw,4rem)] tracking-tight leading-[1.1] mb-7">
+            Meet the next generation of
+            <em
+              class="not-italic bg-gradient-to-r from-indigo-300 via-violet-300 to-indigo-400 bg-clip-text text-transparent">customer
+              service.</em>
           </h2>
-          <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-12 sm:mt-16 px-4 sm:px-0"><a
-              href="https://calendly.com/tushar-flocko/" target="_blank" rel="noopener noreferrer"
-              class="w-full sm:w-auto bg-indigo-600 text-white px-8 sm:px-12 py-4 sm:py-5 rounded-xl hover:bg-indigo-700 transition text-base sm:text-lg font-medium shadow-xl shadow-indigo-200 text-center">
+          <p data-reveal style="--d:90ms"
+            class="text-white/50 font-light text-base sm:text-lg mb-12">
+            Hear what a domain-trained agent sounds like on your bank's calls.
+          </p>
+          <div data-reveal style="--d:180ms"
+            class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+            <a href="https://calendly.com/tushar-flocko/" target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white px-10 py-4 sm:py-5 rounded-full transition text-base sm:text-lg font-medium shadow-[0_0_56px_-8px_rgba(99,102,241,0.9)] hover:-translate-y-0.5 duration-200">
               Book a Demo
-            </a>            <button id="contact-modal-btn"
-              class="w-full sm:w-auto bg-white text-indigo-600 border-2 border-indigo-600 px-8 sm:px-12 py-4 sm:py-5 rounded-xl hover:bg-indigo-50 transition text-base sm:text-lg font-medium cursor-pointer">
+            </a>
+            <button id="contact-modal-btn"
+              class="w-full sm:w-auto border border-white/15 hover:border-white/35 bg-white/5 text-white px-10 py-4 sm:py-5 rounded-full transition text-base sm:text-lg font-medium cursor-pointer hover:-translate-y-0.5 duration-200">
               Contact Us
-            </button></div>
+            </button>
+          </div>
         </div>
       </div>
     </section>
+
     <!-- Contact Modal -->
-    <div id="contact-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-2 sm:p-4" style="background-color: rgba(0, 0, 0, 0.5);">
-      <div class="relative bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-        <button id="close-modal" class="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 transition z-10">
-          <i class="fa-solid fa-times text-xl sm:text-2xl"></i>
+    <div id="contact-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4"
+      style="background-color: rgba(4, 4, 10, 0.75);" role="dialog"
+      aria-modal="true" aria-labelledby="contact-modal-title">
+      <div
+        class="relative bg-[#10101D] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <button id="close-modal"
+          class="absolute top-4 right-4 text-white/40 hover:text-white transition z-10"
+          aria-label="Close contact form">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-6 h-6" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
         </button>
-        <div class="p-4 sm:p-6 md:p-8 lg:p-12">
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
+        <div class="p-6 sm:p-10 lg:p-12">
+          <h2 id="contact-modal-title"
+            class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3 text-center">
             Contact Us
           </h2>
-          <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12 text-center font-light">
-            Get in touch with our team to learn more about Flocko
+          <p class="text-white/50 font-light mb-8 sm:mb-10 text-center">
+            Get in touch to learn more about Flocko
           </p>
-          <form id="contact-form" class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 border border-gray-100">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <form id="contact-form">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
               <div>
-                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="firstName"
+                  class="block text-sm text-white/60 mb-2">
                   First Name
                 </label>
                 <input type="text" id="firstName" name="firstName" required
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition">
+                  class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 outline-none transition">
               </div>
               <div>
-                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="lastName"
+                  class="block text-sm text-white/60 mb-2">
                   Last Name
                 </label>
                 <input type="text" id="lastName" name="lastName" required
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition">
+                  class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 outline-none transition">
               </div>
             </div>
-            <div class="mb-6">
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+            <div class="mb-5">
+              <label for="email" class="block text-sm text-white/60 mb-2">
                 Email
               </label>
               <input type="email" id="email" name="email" required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition">
+                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 outline-none transition">
             </div>
-            <div class="mb-6">
-              <label for="company" class="block text-sm font-medium text-gray-700 mb-2">
+            <div class="mb-5">
+              <label for="company" class="block text-sm text-white/60 mb-2">
                 Company
               </label>
               <input type="text" id="company" name="company"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition">
+                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 outline-none transition">
             </div>
-            <div class="mb-6">
-              <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
+            <div class="mb-7">
+              <label for="message" class="block text-sm text-white/60 mb-2">
                 Message
               </label>
               <textarea id="message" name="message" rows="5" required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition resize-none"></textarea>
+                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 outline-none transition resize-none"></textarea>
             </div>
             <button type="submit"
-              class="w-full bg-indigo-600 text-white px-8 py-4 rounded-xl hover:bg-indigo-700 transition text-lg font-medium shadow-lg shadow-indigo-200">
+              class="w-full bg-indigo-500 hover:bg-indigo-400 text-white px-8 py-4 rounded-full transition text-base font-medium shadow-[0_0_40px_-8px_rgba(99,102,241,0.8)]">
               Send Message
             </button>
           </form>
         </div>
       </div>
     </div>
-    <footer id="footer" class="bg-gray-50 border-t border-gray-200 py-12 sm:py-16">
-      <div class="container mx-auto px-4 sm:px-6">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <div class="mb-8 md:mb-0 flex items-center">
-            <div class="flex space-x-2 flex-col">
-              <div class="flex flex-col">
-                <div class="flex items-center space-x-2">
-              <svg
-                fill="currentColor" viewBox="0 0 24 24"
+
+    <!-- Footer -->
+    <footer id="footer" class="border-t border-white/5 pt-12 sm:pt-16 overflow-hidden">
+      <div class="container mx-auto px-5 sm:px-8">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 pb-12">
+          <div class="flex flex-col items-center md:items-start">
+            <div class="flex items-center space-x-2.5 mb-3">
+              <svg fill="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-8 h-8 text-indigo-600">
+                class="w-6 h-6 text-indigo-400" aria-hidden="true">
                 <path
-                  d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z">
-                </path>
+                  d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
                 <path
-                  d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z">
-                </path>
+                  d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
               </svg>
-              <span
-                class="text-2xl font-semibold text-indigo-600">Flocko</span>
-              </div>
-              </div>
-              <span class="text-gray-500 text-sm">© 2025 Flocko. All rights reserved.</span>
+              <span class="text-xl font-semibold tracking-tight">Flocko</span>
             </div>
-          
+            <p class="text-white/40 text-sm font-light text-center md:text-left">
+              Enterprise Voice AI Agents.<br>Built for accuracy. Trained for
+              your bank.
+            </p>
+          </div>
+          <div
+            class="flex flex-col items-center md:items-end gap-4 text-sm">
+            <div class="flex items-center gap-5">
+              <a href="mailto:tushar@flocko.live"
+                class="text-white/50 hover:text-indigo-300 transition"
+                aria-label="Email tushar@flocko.live">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="w-6 h-6" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path>
+                </svg>
+              </a>
+              <a href="https://www.linkedin.com/in/sharm173/" target="_blank"
+                rel="noopener noreferrer"
+                class="text-white/50 hover:text-indigo-300 transition"
+                aria-label="Flocko on LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                  fill="currentColor" class="w-5 h-5" aria-hidden="true">
+                  <path
+                    d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 01107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 151.6z"></path>
+                </svg>
+              </a>
             </div>
-          <p class="text-gray-600 text-sm max-w-xs mb-8 md:mb-0">
-            Enterprise Voice AI Agents.<br>Built for accuracy. Trained for
-            your business.
-          </p>
+            <span class="text-white/30">© 2026 Flocko. All rights reserved.</span>
+          </div>
         </div>
       </div>
+      <p
+        class="font-display font-bold text-center text-[clamp(5rem,19vw,18rem)] leading-[0.82] tracking-tighter text-white/[0.045] select-none -mb-4 sm:-mb-8"
+        aria-hidden="true">Flocko</p>
     </footer>
+
     <script>
       document.addEventListener('DOMContentLoaded', function()
       {
-        // Section scroll animations
-        const sections = document.querySelectorAll('section');
+        const reduceMotion =
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: '0px 0px -100px 0px'
-        };
+        // ----- Audio console: player + reactive waveform -----
+        const audio = document.getElementById('demo-audio');
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const progressTrack = document.getElementById('progress-track');
+        const progressFill = document.getElementById('progress-fill');
+        const timeCurrent = document.getElementById('time-current');
+        const timeDuration = document.getElementById('time-duration');
+        const recDot = document.getElementById('rec-dot');
+        const recPing = document.getElementById('rec-ping');
+        const canvas = document.getElementById('wave-canvas');
+        const ctx = canvas.getContext('2d');
 
-        const observer = new IntersectionObserver(function(entries)
+        let audioCtx = null;
+        let analyser = null;
+        let freqData = null;
+
+        function formatTime(seconds)
         {
-          entries.forEach(entry =>
+          if (!isFinite(seconds)) return '–:––';
+          const m = Math.floor(seconds / 60);
+          const s = Math.floor(seconds % 60);
+          return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function sizeCanvas()
+        {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        sizeCanvas();
+        window.addEventListener('resize', sizeCanvas);
+
+        // Web Audio analyser makes the waveform react to the actual call
+        // audio. Created lazily on first play (autoplay policies require a
+        // user gesture). If anything fails, the idle animation still runs.
+        function ensureAnalyser()
+        {
+          if (audioCtx) {
+            audioCtx.resume();
+            return;
+          }
+          try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioCtx.createMediaElementSource(audio);
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.8;
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            freqData = new Uint8Array(analyser.frequencyBinCount);
+          } catch (e) {
+            analyser = null;
+          }
+        }
+
+        let tick = 0;
+        function drawWave()
+        {
+          const rect = canvas.getBoundingClientRect();
+          const w = rect.width;
+          const h = rect.height;
+          ctx.clearRect(0, 0, w, h);
+
+          const n = Math.max(28, Math.floor(w / 9));
+          const gap = w / n;
+          const playing = !audio.paused && analyser;
+          if (playing) analyser.getByteFrequencyData(freqData);
+
+          for (let i = 0; i < n; i++)
           {
-            if (entry.isIntersecting)
-            {
-              entry.target.style.opacity = '1';
-              entry.target.style.transform = 'translateY(0)';
+            let amp;
+            if (playing) {
+              // Lower 70% of the spectrum carries the voice; top bins are dead
+              const idx = Math.floor((i / n) * freqData.length * 0.7);
+              amp = freqData[idx] / 255;
+            } else if (reduceMotion) {
+              amp = 0.16;
+            } else {
+              amp = 0.12
+                + 0.07 * Math.sin(i * 0.55 + tick * 0.045)
+                + 0.05 * Math.sin(i * 0.13 - tick * 0.02);
             }
-          });
-        }, observerOptions);
 
-        sections.forEach(section =>
+            const barH = Math.max(3, amp * h * 0.92);
+            const x = i * gap + gap / 2 - 1.6;
+            const y = (h - barH) / 2;
+            ctx.fillStyle = 'rgba(129, 140, 248, ' + (0.3 + amp * 0.7) + ')';
+            ctx.beginPath();
+            if (ctx.roundRect) {
+              ctx.roundRect(x, y, 3.2, barH, 2);
+            } else {
+              ctx.rect(x, y, 3.2, barH);
+            }
+            ctx.fill();
+          }
+
+          tick++;
+          requestAnimationFrame(drawWave);
+        }
+        requestAnimationFrame(drawWave);
+
+        audio.addEventListener('loadedmetadata', function()
         {
-          section.style.opacity = '0';
-          section.style.transform = 'translateY(20px)';
-          section.style.transition =
-            'opacity 0.6s ease-out, transform 0.6s ease-out';
-          observer.observe(section);
+          timeDuration.textContent = formatTime(audio.duration);
         });
 
-        // Contact Modal functionality
+        playBtn.addEventListener('click', function()
+        {
+          if (audio.paused) {
+            ensureAnalyser();
+            audio.play();
+          } else {
+            audio.pause();
+          }
+        });
+
+        audio.addEventListener('play', function()
+        {
+          playIcon.classList.add('hidden');
+          pauseIcon.classList.remove('hidden');
+          playBtn.setAttribute('aria-label', 'Pause sample call');
+          recDot.classList.remove('bg-white/25');
+          recDot.classList.add('bg-red-400');
+          recPing.classList.remove('hidden');
+          recPing.classList.add('animate-ping');
+        });
+
+        audio.addEventListener('pause', function()
+        {
+          playIcon.classList.remove('hidden');
+          pauseIcon.classList.add('hidden');
+          playBtn.setAttribute('aria-label', 'Play sample call');
+          recDot.classList.add('bg-white/25');
+          recDot.classList.remove('bg-red-400');
+          recPing.classList.add('hidden');
+          recPing.classList.remove('animate-ping');
+        });
+
+        audio.addEventListener('timeupdate', function()
+        {
+          if (!audio.duration) return;
+          const pct = (audio.currentTime / audio.duration) * 100;
+          progressFill.style.width = pct + '%';
+          progressTrack.setAttribute('aria-valuenow', Math.round(pct));
+          timeCurrent.textContent = formatTime(audio.currentTime);
+        });
+
+        progressTrack.addEventListener('click', function(e)
+        {
+          if (!audio.duration) return;
+          const rect = progressTrack.getBoundingClientRect();
+          const ratio = (e.clientX - rect.left) / rect.width;
+          audio.currentTime = Math.max(0, Math.min(1, ratio)) * audio.duration;
+        });
+
+        // ----- Scroll reveals -----
+        const revealEls = document.querySelectorAll('[data-reveal]');
+        if (reduceMotion) {
+          revealEls.forEach(el => el.classList.add('is-revealed'));
+        } else {
+          const revealObserver = new IntersectionObserver(function(entries)
+          {
+            entries.forEach(entry =>
+            {
+              if (entry.isIntersecting)
+              {
+                entry.target.classList.add('is-revealed');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+          revealEls.forEach(el => revealObserver.observe(el));
+        }
+
+        // ----- Stat count-ups -----
+        const countEls = document.querySelectorAll('[data-count]');
+        function runCount(el)
+        {
+          const target = parseInt(el.dataset.count, 10);
+          const duration = 1100;
+          const start = performance.now();
+          function step(now)
+          {
+            const p = Math.min(1, (now - start) / duration);
+            el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+        if (!reduceMotion) {
+          const countObserver = new IntersectionObserver(function(entries)
+          {
+            entries.forEach(entry =>
+            {
+              if (entry.isIntersecting)
+              {
+                runCount(entry.target);
+                countObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.4 });
+          countEls.forEach(el =>
+          {
+            el.textContent = '0';
+            countObserver.observe(el);
+          });
+        }
+
+        // ----- Pointer-follow glow on cards -----
+        document.querySelectorAll('.glow-card').forEach(card =>
+        {
+          card.addEventListener('pointermove', function(e)
+          {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+            card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+          });
+        });
+
+        // ----- Contact modal -----
         const contactModal = document.getElementById('contact-modal');
         const contactModalBtn = document.getElementById('contact-modal-btn');
         const talkToUsBtn = document.getElementById('talk-to-us-btn');
         const closeModalBtn = document.getElementById('close-modal');
 
-        function openModal() {
+        function openModal()
+        {
           contactModal.classList.remove('hidden');
           contactModal.classList.add('flex');
           document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
+        function closeModal()
+        {
           contactModal.classList.add('hidden');
           contactModal.classList.remove('flex');
           document.body.style.overflow = '';
@@ -491,61 +1196,56 @@
         }
         closeModalBtn.addEventListener('click', closeModal);
 
-        // Close modal when clicking outside
-        contactModal.addEventListener('click', function(e) {
+        contactModal.addEventListener('click', function(e)
+        {
           if (e.target === contactModal) {
             closeModal();
           }
         });
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function(e)
+        {
           if (e.key === 'Escape' && !contactModal.classList.contains('hidden')) {
             closeModal();
           }
         });
 
-        // Handle form submission - using mailto (works immediately without backend)
+        // ----- Contact form (mailto, no backend needed) -----
         const contactForm = document.getElementById('contact-form');
-        
+
         if (contactForm) {
-          contactForm.addEventListener('submit', function(e) {
+          contactForm.addEventListener('submit', function(e)
+          {
             e.preventDefault();
-            
+
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
-            
-            // Get form values
+
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
             const company = document.getElementById('company').value || 'N/A';
             const message = document.getElementById('message').value;
-            
-            // Format email body
+
             const emailBody = `First Name: ${firstName}%0D%0ALast Name: ${lastName}%0D%0AEmail: ${email}%0D%0ACompany: ${company}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
-            
-            // Create mailto link
-            const mailtoLink = `mailto:tushar@flocko.live?subject=${encodeURIComponent('Landing page from submission')}&body=${emailBody}`;
-            
-            // Open mailto (opens user's email client)
+
+            const mailtoLink = `mailto:tushar@flocko.live?subject=${encodeURIComponent('Landing page form submission')}&body=${emailBody}`;
+
             window.location.href = mailtoLink;
-            
-            // Show success message
+
             submitBtn.textContent = 'Opening Email...';
-            submitBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            submitBtn.classList.remove('bg-indigo-500', 'hover:bg-indigo-400');
             submitBtn.classList.add('bg-green-600');
-            
-            // Reset form
+
             contactForm.reset();
-            
-            // Close modal after a short delay
-            setTimeout(function() {
+
+            setTimeout(function()
+            {
               closeModal();
               submitBtn.textContent = originalText;
               submitBtn.disabled = false;
               submitBtn.classList.remove('bg-green-600');
-              submitBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+              submitBtn.classList.add('bg-indigo-500', 'hover:bg-indigo-400');
             }, 2000);
           });
         }
